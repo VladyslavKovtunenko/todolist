@@ -17,7 +17,7 @@ function database() {
 
             var template = "<ol> {{#tasks}} <li>" +
                 "{{title}}<ul><li>{{description}}</li></ul>" +
-                "</li><p><button type='button' data-action='delete'>Delete task</button></p>{{/tasks}}</ol>";
+                "<p><button type='button' data-action='delete'>Delete task</button></p>{{/tasks}}</li></ol>";
             
             var output = Mustache.render(template, outputData);
             document.getElementById('list').innerHTML = output;
@@ -41,19 +41,4 @@ function todolist() {
     this.loadlist = function () {
         Data.getTasks();
     };
-    
-    
-    /*
-     var taskList = document.getElementById('list');
-
-     taskList.onclick = function (event) {
-     var target = event.target;
-     var action = target.getAttribute('data-action');
-
-     if(action === 'delete'){
-     console.log('ok');
-
-     }
-
-     };*/
 }
