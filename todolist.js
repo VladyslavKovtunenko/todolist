@@ -1,19 +1,21 @@
 function database() {
     var data = new Firebase("https://vivid-torch-5093.firebaseio.com");
-    this.count = getCount();
 
     this.setTask = function (task) {
-        var i = this.count;
-        data.child("tasks/" + i).update(task);
-        i++;
-        data.child("counter").set(i);
+        data.once("value", function (snap) {
+            var i = snap.val().counter;
+            data.child("tasks/" + i).update(task);
+            i++;
+            data.child("counter").set(i);
+        });
+        this.getTasks();
     };
 
     this.getTasks = function () {
-        data.once("value", function(snapshot) {
+        data.on("value", function(snapshot) {
             var outputData = snapshot.val();
 
-            template = "<ol> {{#tasks}} <li>" +
+            var template = "<ol> {{#tasks}} <li>" +
                 "{{title}}<ul><li>{{description}}</li></ul>" +
                 "</li><p><button type='button' data-action='delete'>Delete task</button></p>{{/tasks}}</ol>";
             
@@ -22,24 +24,18 @@ function database() {
         });
     };
 
-    function getCount() {
-        return data.once("value", function (snap) {
-            return snap.val().counter;
-        });
-    }
-
 }
 
 function todolist() {
 
     var Data = new database();
-    var tasks = [];
+    var task;
 
     this.setNewTask = function () {
-        tasks[Data.count] = {title: document.getElementById("task_title").value,
-            description: document.getElementById("task_description").value};
-        Data.setTask(tasks[Data.count]);
-        this.loadlist();
+            task = {title: document.getElementById("task_title").value,
+                description: document.getElementById("task_description").value};
+            Data.setTask(task);
+            this.loadlist();
     };
 
     this.loadlist = function () {
