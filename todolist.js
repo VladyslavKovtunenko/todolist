@@ -4,6 +4,7 @@ function database() {
     this.setTask = function (task) {
         data.once("value", function (snap) {
             var i = snap.val().counter;
+            task.id = i;
             data.child("tasks/" + i).update(task);
             i++;
             data.child("counter").set(i);
@@ -14,13 +15,34 @@ function database() {
     this.getTasks = function () {
         data.on("value", function(snapshot) {
             var outputData = snapshot.val();
+            // var i = snapshot.val(;
 
             var template = "<ol> {{#tasks}} <li>" +
                 "{{title}}<ul><li>{{description}}</li></ul>" +
-                "<p><button type='button' data-action='delete'>Delete task</button></p>{{/tasks}}</li></ol>";
-            
+                "<p><button type='button' data-action='delete' id='" + "{{id}}" +
+                "'>Delete task</button></p>{{/tasks}}</li></ol>";
+
             var output = Mustache.render(template, outputData);
             document.getElementById('list').innerHTML = output;
+        });
+    };
+
+    this.delete = function (id){
+        data.once("value", function (snapshot) {
+            var currentCounter = snapshot.val().counter,
+                i,
+                nextID;
+
+            // console.log(snapshot.val().tasks[id]);
+
+            for(i = id; i < currentCounter - 1; i++){
+                nextID = +i+1;
+                data.child("tasks/" + i + "/").set(snapshot.val().tasks[nextID]);
+                data.child("tasks/" + i + "/id").set(snapshot.val().tasks[i].id);
+            }
+
+            data.child("tasks/" + i).set(null);
+            data.child("counter").set(currentCounter-1);
         });
     };
 
@@ -41,4 +63,9 @@ function todolist() {
     this.loadlist = function () {
         Data.getTasks();
     };
+
+    this.deleteTask = function (taskID) {
+        Data.delete(taskID);
+        this.loadlist();
+    }
 }
