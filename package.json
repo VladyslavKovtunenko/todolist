@@ -22,7 +22,9 @@
   "dependencies": {
     "babel-core": "^6.8.0",
     "babel-loader": "^6.2.4",
+    "hogan.js": "^3.0.2",
     "mustache": "^2.2.1",
+    "mustache-loader": "^0.3.1",
     "webpack": "^1.13.0"
   },
   "devDependencies": {
@@ -31,4 +33,4 @@
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1"
   }
-  }
+}
