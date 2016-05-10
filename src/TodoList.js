@@ -10,6 +10,8 @@ export default function Todolist() {
                 description: document.getElementById("task_description").value};
         Data.setTask(task);
         this.loadlist();
+        document.getElementById("task_title").value = "";
+        document.getElementById("task_description").value = "";
     };
 
     this.loadlist = () => {
