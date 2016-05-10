@@ -9,7 +9,7 @@ module.exports = {
             {
                 loader: "babel-loader",
                 query: {
-                    presets: ['es2015', 'stage-0']
+                    presets: ['babel-preset-es2015', 'babel-preset-stage-0']
                 }
             },
             {
