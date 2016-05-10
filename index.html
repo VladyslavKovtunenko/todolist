@@ -2,13 +2,8 @@
 <html lang="en">
 <head>
     <title>Todolist</title>
-    <script defer src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
-    <script defer type="text/javascript" src="mustache.js" ></script>
-    <script defer type="text/javascript" src="todolist.js"></script>
-    <script defer type="text/javascript" src="act.js"></script>
 </head>
-<body onload="list.loadlist()">
-
+<body>
     <h3>Set new task:</h3>
     <dl>
         <dt>
@@ -20,11 +15,12 @@
             <textarea type="text" id="task_description"></textarea>
         </dt>
         <dt>
-            <p><button type="button" onclick="list.setNewTask()">Set</button></p>
+            <p><button type="button" id="set">Set</button></p>
         </dt>
     </dl>
-
     <div id="list">
     </div>
+    <script  src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+    <script  type="text/javascript" src="bundle.js"></script>
 </body>
 </html>

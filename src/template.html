@@ -1,0 +1,12 @@
+<ol> {{#tasks}}
+    <li>
+        {{title}}
+        <ul>
+            <li>{{description}}</li>
+        </ul>
+        <p>
+            <button type='button' data-action='delete' id='{{id}}'>Delete task</button>
+        </p>
+        {{/tasks}}
+    </li>
+</ol>
