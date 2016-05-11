@@ -1,4 +1,10 @@
-import template from './template.html'
+import template from './react-template'
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+/*var React = require('react');
+var ReactDOM = require('react-dom');*/
+
 export default function database() {
     var data = new Firebase("https://vivid-torch-5093.firebaseio.com");
 
@@ -15,9 +21,15 @@ export default function database() {
 
     this.getTasks = () => {
         data.on("value", function(snapshot) {
-            var outputData = snapshot.val();
-            document.getElementById('list').innerHTML = template(outputData);
+            /*
+            * TODO getTask with react
+            * */
+            var tasks = snapshot.val().tasks;
+            console.log(snapshot.val().tasks);
+            ReactDOM.render( <template tasks />, document.getElementById('list'));
         });
+
+        //ReactDOM.render( <template />, document.getElementById('list'));
     };
 
     this.delete = (id) => {
