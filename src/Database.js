@@ -1,12 +1,29 @@
-import template from './react-template'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-/*var React = require('react');
-var ReactDOM = require('react-dom');*/
-
 export default function database() {
     var data = new Firebase("https://vivid-torch-5093.firebaseio.com");
+
+    var Template = React.createClass({
+        render: function () {
+            return <li>{this.props.list.title}
+            <ul>
+                <li>{this.props.list.description}</li>
+            </ul>
+            <p>
+            <button type='button' data-action='delete'>Delete task</button>
+            </p>
+            </li>;
+        }
+    });
+
+    var Project = React.createClass({
+        render: function () {
+            return <ol>
+                <Template />
+            </ol>;
+        }
+    });
 
     this.setTask = (task) => {
         data.once("value", function (snap) {
@@ -21,15 +38,20 @@ export default function database() {
 
     this.getTasks = () => {
         data.on("value", function(snapshot) {
-            /*
-            * TODO getTask with react
-            * */
-            var tasks = snapshot.val().tasks;
-            console.log(snapshot.val().tasks);
-            ReactDOM.render( <template tasks />, document.getElementById('list'));
-        });
+            var task = {},
+                count = snapshot.val().counter;
 
-        //ReactDOM.render( <template />, document.getElementById('list'));
+            for(var i = 0; i < count; i++){
+                task.title = snapshot.val().tasks[i].title;
+                task.description = snapshot.val().tasks[i].description;
+                task.id = "'" + (1+i) + "'";
+                console.log(task.id);
+                ReactDOM.render(<Template list={task} />, document.getElementById('next'));
+            }
+            /*task.title = snapshot.val().tasks[0].title;
+            task.description = snapshot.val().tasks[0].description;
+            ReactDOM.render(<Template list={task} />, document.getElementById('next'));*/
+        });
     };
 
     this.delete = (id) => {
