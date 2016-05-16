@@ -4,27 +4,20 @@ import ReactDOM from 'react-dom'
 export default function database() {
     var data = new Firebase("https://vivid-torch-5093.firebaseio.com");
 
-    var Template = React.createClass({
+    var App = React.createClass({
         render: function () {
-            return <li>{this.props.list.title}
-            <ul>
-                <li>{this.props.list.description}</li>
-            </ul>
-            <p>
-            <button type='button' data-action='delete'>Delete task</button>
-            </p>
-            </li>;
+            var string = this.props.list.map((tasks, i) => (
+                <li>{this.props.list[i].title}<ul>
+                    <li>{this.props.list[i].description}</li>
+                    <button type='button' data-action='delete' id={tasks.id}>Delete task</button>
+                </ul>
+                </li>
+            ));
+
+            return <ol>{string}</ol>;
         }
     });
-
-    var Project = React.createClass({
-        render: function () {
-            return <ol>
-                <Template />
-            </ol>;
-        }
-    });
-
+    
     this.setTask = (task) => {
         data.once("value", function (snap) {
             var i = snap.val().counter;
@@ -38,19 +31,8 @@ export default function database() {
 
     this.getTasks = () => {
         data.on("value", function(snapshot) {
-            var task = {},
-                count = snapshot.val().counter;
-
-            for(var i = 0; i < count; i++){
-                task.title = snapshot.val().tasks[i].title;
-                task.description = snapshot.val().tasks[i].description;
-                task.id = "'" + (1+i) + "'";
-                console.log(task.id);
-                ReactDOM.render(<Template list={task} />, document.getElementById('next'));
-            }
-            /*task.title = snapshot.val().tasks[0].title;
-            task.description = snapshot.val().tasks[0].description;
-            ReactDOM.render(<Template list={task} />, document.getElementById('next'));*/
+            console.log(snapshot.val().tasks);
+            ReactDOM.render(<App list={snapshot.val().tasks}/>, document.getElementById('list'));
         });
     };
 
