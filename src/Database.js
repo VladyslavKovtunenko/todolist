@@ -4,17 +4,17 @@ import ReactDOM from 'react-dom'
 export default function database() {
     var data = new Firebase("https://vivid-torch-5093.firebaseio.com");
 
-    var App = React.createClass({
+    var Task = React.createClass({
         render: function () {
-            var string = this.props.list.map((tasks, i) => (
-                <li>{this.props.list[i].title}<ul>
-                    <li>{this.props.list[i].description}</li>
-                    <button type='button' data-action='delete' id={tasks.id}>Delete task</button>
-                </ul>
-                </li>
-            ));
+            return <li>{this.props.task.title}<ul>
+                    <li>{this.props.task.description}</li>
+                    <button type='button' data-action='delete' id={this.props.index}>Delete task</button></ul></li>;
+        }
+    });
 
-            return <ol>{string}</ol>;
+    var Todo = React.createClass({
+        render: function () {
+            return <ol>{this.props.tasks.map((task, index) => (<Task task={task} index={index}/>))}</ol>;
         }
     });
     
@@ -31,8 +31,7 @@ export default function database() {
 
     this.getTasks = () => {
         data.on("value", function(snapshot) {
-            console.log(snapshot.val().tasks);
-            ReactDOM.render(<App list={snapshot.val().tasks}/>, document.getElementById('list'));
+            ReactDOM.render(<Todo tasks={snapshot.val().tasks}/>, document.getElementById('list'));
         });
     };
 
